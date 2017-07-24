@@ -1,0 +1,499 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PONG!!</title>
+	<script
+	  src="https://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous">
+	 </script>
+	<style>
+		body{
+			background-color: linen;
+			margin-left: 50;
+		}
+		#movingPong{
+			color:red;
+			font-size: 20px;
+			/*margin-left: 5px;*/
+			/*text-align: center;*/
+		}
+		#leftBlock{
+			float: left;
+			display: inline-block;
+			width: 10px;
+			height: 90px;
+			background-color: grey;
+		}
+		#centerBlock{
+			display: inline-block;
+			width:780;
+			height: 50px;
+			/*background-color: black;*/
+		}
+		#rightBlock{
+			float: right;
+			display: inline-block;
+			width: 10px;
+			height: 90px;
+			background-color: grey;
+		}
+		#pongContainer{
+			width: 800px;
+			height: 90px;
+			display: inline-block;
+			background-color: lightgrey;
+
+		}
+/*following is for testing agt bottom of page only*/
+	#surroundThree{
+		background-color: yellow;
+		height:110px;
+		width: 800px;
+/*		display: inline-block;
+*/
+	}
+	#right{
+		height: 100px;
+		width: 100px;
+		background-color: red;
+		float: right;
+		display: inline-block;
+
+	}
+	#center{
+		height: 100px;
+		width: 100px;
+		background-color: black;
+		display: inline-block;
+
+	}
+	#left{
+		height: 100px;
+		width: 100px;
+		background-color: lime;
+		float: left;
+		display: inline-block;
+
+	}
+
+	</style>
+
+
+
+<script>
+var canvas;
+var canvasContext;
+var ballx = 50;
+var bally = 250; 
+var ballSpeedX = 10;
+var ballSpeedY = 5;
+var movePositive = true;
+var paddle1Y = 250;
+var paddle2Y = 250;
+var userScore = 0;
+var computerScore = 0 ;
+//Remember constants are all caps
+const PADDLE_HEIGHT = 100;
+const PADDLE_THICKNESS = 10;
+const COMPUTER_SPEED = 5;
+const QUIT_SCORE = 20;
+
+//Load setup after window has completely loaded
+	$(document).ready(function(){
+		console.log('Running Jquery document.ready');
+		// $("#movingPong").mousover(function(){
+  //       // $('.info').animate({ marginTop: '-50px' , opacity: 0.5 }, 1000);
+  //       alert('mousover');
+  //   	}); 
+		$("#movingPong").animate(
+		 	{marginLeft: "+710px",
+			},500);
+		$("#movingPong").animate(
+		 	{marginLeft: "20px",
+			},500);
+			// $('#pauseButton').click(function(){
+			// 	console.log(pause);
+			// 	alert('you clicked the pause button')
+			// 	pause =true;
+			// 	console.log(pause);
+			// })
+
+	setInterval(function(){
+		var rndSpeed = Math.floor(Math.random()*1000 + 600);
+
+		 $("#movingPong").animate(
+		 	{marginLeft: "+720px",
+			},rndSpeed);
+		$("#movingPong").animate(
+		 	{marginLeft: "10px",
+			},rndSpeed);
+
+
+
+	},1000)
+
+
+
+	})
+
+	window.onload = function(){
+
+//Animation testing
+
+
+
+
+
+
+
+		// movingPongSection = document.getElementById('movingPong');
+		// var moveCount = 50;
+
+		// setInterval(function(){
+		// 	moveCount++;
+		// 	// var myHTML = '<h1 style="marginleft:"<%moveCount%> "px;">We are in loop</h1>';			
+		// 	var myHTML = "<h1 style='marginleft:" +moveCount+ "px;'>We are in loop " + moveCount +"</h1>";
+		// 	console.log(myHTML);
+		// 	movingPongSection.innerHTML=myHTML;
+
+		// },200)
+
+
+
+
+
+		// for(var i = 0; i< 200; i++){
+		// 	var myHtml = i;
+		// 	movingPongSection.innerHTML="<h1 style='marginleft:'+ i +'px;'>We are in loop " + myHtml +"</h1>"
+
+		// }
+
+
+		// movingPongSection.innerHTML = '<h1> It Works </h1>';
+
+		// element = document.getElementById("divFirst")
+
+
+
+
+		// console.log(movingPongSection);
+		// console.log('CSS is', movingPongSection.style.color);
+		// document.getElementById('movingPong').onclick = function() {
+		// 	// alert('JS working');
+  // 			this.style.color = 'red';
+  // 			// this.style.marginleft = '400px';
+
+
+  // 			// parseFloat(getComputedStyle(this).left) + 42 + 'px';
+		// };
+
+
+
+
+
+//------End Animation testing
+
+
+
+		var paused = false;
+
+		console.log('Page loaded.')
+
+
+
+
+		var ready = window.confirm('Ready?');
+		//setup eventlisteners
+		document.getElementById("pauseButton").addEventListener("click", function(){
+			paused = true ;
+		    console.log('paused is ' + paused);
+		});
+		document.getElementById("resumeButton").addEventListener("click", function(){
+			paused = false ;
+		    console.log('paused is ' + paused);
+		});
+
+
+		//setup reference to computer and player score sections. would be easier with jquery.
+		compScoreSection = document.getElementById('compScore');
+		userScoreSection = document.getElementById('userScore');
+		wholePage = document.getElementById('wholeShebang');
+
+
+
+
+		// alert(ready);
+		if(!ready){
+			alert('game cancelled')
+			// document.body.innerHTML
+			wholePage.innerHTML= '<h1> YOU CANCELLED!! </h1>'
+
+			// end;
+		}
+		// else{
+		// 	wholePage.innerHTML= '<h1> YOU CANCELLED!! </h1>'
+		// }
+		var framesPerSecond = 33;
+
+
+
+		// compScoreSection.innerHTML= 'Hellllooooooo!!!!!'
+
+		//Setup Canvas
+		canvas = document.getElementById('gameCanvas');
+
+		canvasContext = canvas.getContext('2d');
+		// setINterval(function)
+		setInterval( function(){
+			console.log('In the set interval, paused is', paused);
+			if(paused ==false){  
+				moveEverything();
+				computerMovement();
+				drawEverything();
+			}
+
+
+
+		}, 1000/framesPerSecond);
+
+		//add eventlistener for mouse movement
+		canvas.addEventListener('mousemove', function(evt){
+			var mousePos = calculateMousePosition(evt);
+			paddle1Y = mousePos.y;
+			// paddle2Y = mousePos.y;
+			// console.log('The y position is', paddle1Y);
+
+		})
+
+	}
+
+
+//figure out where the mouse is.
+	function calculateMousePosition(evt){
+		var rect = canvas.getBoundingClientRect();
+		var root = document.documentElement;
+		var mouseX = evt.clientX - rect.left - root.scrollLeft;
+		var mouseY = evt.clientY - rect.top - root.scrollTop;
+		return {
+
+			x:mouseX,
+			y:mouseY
+		}
+
+
+	}
+//Reset ball if it goes off the left side. Adds score to computer
+	function ballReset(){
+		// ballSpeedX = -ballSpeedX;
+
+			ballSpeedX = 10;
+			ballSpeedY = 0;
+
+
+			ballx = canvas.width/2;
+			bally = canvas.height/2;
+			computerScore ++;
+			compScoreSection.innerHTML= 'Computer Score: ' + computerScore;
+
+			if(computerScore > QUIT_SCORE){
+				computerScore = 0;
+
+				alert('Computer wins!')
+				location.reload();
+			}
+			compScoreSection.innerHTML= 'Computer Score: ' + computerScore;
+
+		
+	}
+//Reset ball if goes out on right. Add score to human
+	function ballReset2(){
+		// ballSpeedX = -ballSpeedX;
+
+			ballSpeedX = 10;
+			ballSpeedY = 0;
+			ballx = canvas.width/2;
+			bally = canvas.height/2;
+			userScore ++;
+			userScoreSection.innerHTML= 'User Score: ' + userScore;
+
+			if(userScore > QUIT_SCORE){
+				userScore = 0;
+
+				alert('You won!')
+				location.reload();
+
+				// break;
+			}
+		userScoreSection.innerHTML= 'Your Score: ' + userScore;
+
+		
+
+	}	
+//Computer move controller
+	function computerMovement(){
+		if(paddle2Y < bally){
+			// console.log('moving down');
+			paddle2Y += COMPUTER_SPEED;
+		}else{
+			// console.log('moving up');
+
+			paddle2Y -=COMPUTER_SPEED;
+		}
+	}
+
+
+//move everything.
+	function moveEverything(){
+		if(movePositive){
+				ballx= ballx +ballSpeedX;
+				bally = bally+ ballSpeedY;
+
+		}else{
+				ballx= ballx -ballSpeedX;
+				bally = bally - ballSpeedY;
+		}
+	}
+
+//Draw athe screen
+	function drawEverything(){
+		//Use this to force paddles to follow the ball
+		// paddle1Y = bally -50;
+		// paddle2Y = bally -50;
+		 // console.log('drawEverything called');
+		// Main game canvas
+		colorRect(0,0, canvas.width, canvas.height, 'darkgreen');
+
+		//left paddle
+		colorRect(0,paddle1Y-(PADDLE_HEIGHT/2), PADDLE_THICKNESS, PADDLE_HEIGHT, 'red');
+
+		//right paddle
+		colorRect(canvas.width -PADDLE_THICKNESS, paddle2Y-(PADDLE_HEIGHT/2), PADDLE_THICKNESS, PADDLE_HEIGHT, 'red');
+		for(var i = 0;i< canvas.height; i+=5){
+			// console.log('I is', i);
+			colorRect(400, i,1, canvas.height, 'white');
+
+		}
+
+
+
+		// check to see if ball is on the court and reverse if at edge
+		if(ballx >= canvas.width-20){
+			// console.log('Reached ', ballx);
+			// movePositive = false;
+			if(bally>=paddle2Y-50 && bally <= (paddle2Y +PADDLE_HEIGHT/2)){
+
+				ballSpeedX = -(ballSpeedX +2);
+				ballSpeedY = ballSpeedY + (Math.random() < 0.5 ? -1 : 1)*(Math.random()*8);			}else{
+				// alert ('Hit the computer paddle');
+				ballReset2()
+
+
+			}
+
+
+		}else if(ballx <= 20){
+
+			// console.log('Reached ', ballx, ' And the y of the paddle stretches from ', paddle1Y, ' to ', (paddle1Y + PADDLE_HEIGHT) );
+
+
+			//check if ball y is within paddle length
+			if(bally >= paddle1Y-50 && bally <= (paddle1Y +PADDLE_HEIGHT/2)){
+				ballSpeedX = -ballSpeedX;
+				ballSpeedY = ballSpeedY + (Math.random() < 0.5 ? -1 : 1)*(Math.random()*8);
+
+
+
+			}else{
+				// ballSpeedX = -ballSpeedX;
+				// alert('You lost!!');
+				ballReset();
+			}
+
+
+
+
+		}
+		//Do the same for y axis This could be shorter using an or rather than an else if
+		if(bally >= canvas.height-20){
+			ballSpeedY = -ballSpeedY;
+		}else if(bally <= 10){
+			ballSpeedY = -ballSpeedY;
+		}
+
+		colorCircle(ballx, bally, 10, 'yellow');
+
+				
+	}
+
+
+	//fill rectangles
+	function colorRect(leftX, topY, width, height, drawColor){
+		canvasContext.fillStyle = drawColor;
+		canvasContext.fillRect(leftX, topY, width, height);
+	}
+
+	//fill in circles
+	function colorCircle(centerX, centerY, radius, drawColor){
+
+
+
+		//draw the ball requires  centerX of ball, centerY, the radius, 0 if for full circle(radians) and true reverses the part of the circle from false.
+
+		canvasContext.fillStyle = drawColor;
+		canvasContext.beginPath();
+		canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+		canvasContext.fill();
+
+	}
+
+
+
+
+
+
+</script>
+</head>
+<body>
+<div id ='wholeShebang'>
+	<div id = 'pongContainer' >
+
+		<div id='leftBlock'></div>
+		<div id ='centerBlock'>
+			<p id='movingPong'>PONG</p>
+		</div>	
+		<div id ='rightBlock'></div>
+	</div>
+
+	<h3 id='compScore'>Computer Score: 0</h3>
+	<h3 id='userScore'>User Score: 0</h3>
+
+
+	<canvas id ='gameCanvas' width = '800' height='600'></canvas>
+
+	<button id = 'pauseButton'>Pause</button><br>
+	<button id = 'resumeButton'>Resume</button>
+</div>
+
+
+
+<div id = 'surroundThree'>
+		<div id = 'left'></div>
+		<div id = 'center'></div>
+		<div id = 'right'></div>
+
+
+</div>
+</body>
+</html>
+
+
+
+
+
+
