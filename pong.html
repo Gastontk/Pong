@@ -30,11 +30,21 @@
 			height: 90px;
 			background-color: grey;
 		}
+		#leftPaddle{
+			margin-top: 20px;
+			float: left;
+		}
 		#centerBlock{
 			display: inline-block;
-			width:780;
+			width:680;
 			height: 50px;
 			/*background-color: black;*/
+		}
+		#rightPaddle{
+			margin-top: -20px;
+
+			float: right;
+			margin-left: 700px;
 		}
 		#rightBlock{
 			float: right;
@@ -42,23 +52,37 @@
 			width: 10px;
 			height: 90px;
 			background-color: grey;
+			padding:0px;
 		}
 		#pongContainer{
 			width: 800px;
 			height: 90px;
 			display: inline-block;
-			background-color: lightgrey;
+			/*background-color: lightgrey;*/
+
+		}
+		#canvasHolderDiv{
+			width: 1000px;
+			height:800px;
+			background-color: grey; 
+			text-align: center;
+			border: solid darkblue 5px;
+
+		}
+		#gameCanvas{
+			margin-top: 100px
 
 		}
 /*following is for testing agt bottom of page only*/
-	#surroundThree{
+/*	#surroundThree{
 		background-color: yellow;
 		height:110px;
-		width: 800px;
+		width: 800px;*/
 /*		display: inline-block;
 */
 	}
-	#right{
+	/*leftover from testing div style rather than canvas*/
+/*	#right{
 		height: 100px;
 		width: 100px;
 		background-color: red;
@@ -80,13 +104,15 @@
 		float: left;
 		display: inline-block;
 
-	}
+	}*/
 
 	</style>
 
 
 
 <script>
+var paused = false;
+
 var canvas;
 var canvasContext;
 var ballx = 50;
@@ -112,11 +138,23 @@ const QUIT_SCORE = 20;
   //       alert('mousover');
   //   	}); 
 		$("#movingPong").animate(
-		 	{marginLeft: "+710px",
+		 	{marginLeft: "+630px",
 			},500);
+		$('#leftPaddle').animate(
+			{marginTop: "+50px"
+			}, 500);
+		$('#rightPaddle').animate(
+			{marginTop: "-50px"
+			}, 500)
 		$("#movingPong").animate(
-		 	{marginLeft: "20px",
+		 	{marginLeft: "10px",
 			},500);
+		$('#leftPaddle').animate(
+			{marginTop: "0px"
+			}, 500)
+		$('#rightPaddle').animate(
+			{marginTop: "30px"
+			}, 500)
 			// $('#pauseButton').click(function(){
 			// 	console.log(pause);
 			// 	alert('you clicked the pause button')
@@ -128,11 +166,25 @@ const QUIT_SCORE = 20;
 		var rndSpeed = Math.floor(Math.random()*1000 + 600);
 
 		 $("#movingPong").animate(
-		 	{marginLeft: "+720px",
+		 	{marginLeft: "+630px",
 			},rndSpeed);
+		$('#leftPaddle').animate(
+			{marginTop: "+50px"
+			}, 800);
+		$('#rightPaddle').animate(
+			{marginTop: "-50px"
+			}, 500)
+
 		$("#movingPong").animate(
 		 	{marginLeft: "10px",
 			},rndSpeed);
+		$('#leftPaddle').animate(
+			{marginTop: "0px"
+			}, 800)
+		$('#rightPaddle').animate(
+			{marginTop: "+30px"
+			}, 700)
+
 
 
 
@@ -201,7 +253,6 @@ const QUIT_SCORE = 20;
 
 
 
-		var paused = false;
 
 		console.log('Page loaded.')
 
@@ -224,7 +275,12 @@ const QUIT_SCORE = 20;
 		compScoreSection = document.getElementById('compScore');
 		userScoreSection = document.getElementById('userScore');
 		wholePage = document.getElementById('wholeShebang');
+		leftPaddle = document.getElementById('leftPaddle');
 
+
+		setInterval(function(){
+
+		})
 
 
 
@@ -249,6 +305,7 @@ const QUIT_SCORE = 20;
 		canvas = document.getElementById('gameCanvas');
 
 		canvasContext = canvas.getContext('2d');
+	
 		// setINterval(function)
 		setInterval( function(){
 			console.log('In the set interval, paused is', paused);
@@ -291,7 +348,6 @@ const QUIT_SCORE = 20;
 //Reset ball if it goes off the left side. Adds score to computer
 	function ballReset(){
 		// ballSpeedX = -ballSpeedX;
-
 			ballSpeedX = 10;
 			ballSpeedY = 0;
 
@@ -308,12 +364,17 @@ const QUIT_SCORE = 20;
 				location.reload();
 			}
 			compScoreSection.innerHTML= 'Computer Score: ' + computerScore;
+			paused = true ;
+			setTimeout(function(){
+				paused = false;
+
+			},2000);
+
 
 		
 	}
 //Reset ball if goes out on right. Add score to human
 	function ballReset2(){
-		// ballSpeedX = -ballSpeedX;
 
 			ballSpeedX = 10;
 			ballSpeedY = 0;
@@ -331,6 +392,11 @@ const QUIT_SCORE = 20;
 				// break;
 			}
 		userScoreSection.innerHTML= 'Your Score: ' + userScore;
+		paused = true ;
+		setTimeout(function(){
+			paused = false;
+
+		},2000);
 
 		
 
@@ -362,6 +428,7 @@ const QUIT_SCORE = 20;
 
 //Draw athe screen
 	function drawEverything(){
+	
 		//Use this to force paddles to follow the ball
 		// paddle1Y = bally -50;
 		// paddle2Y = bally -50;
@@ -380,7 +447,34 @@ const QUIT_SCORE = 20;
 
 		}
 
+//Test adding text over the canvas:
+		canvasContext.font = '60px Arial';
 
+		// setTimeout(function(){
+
+		// 	canvasContext.fillStyle = 'black';
+
+		// 	canvasContext.fillText("3", 390, 150);
+
+		// }, 1000)		
+	var timeLeft = 3
+		setTimeout(function(){
+			canvasContext.fillStyle = 'black';
+
+
+			canvasContext.fillText(timeLeft, 390, 150);
+			
+
+
+		}, 2000)		
+		// setTimeout(function(){
+		// 	canvasContext.fillStyle = 'darkgreen';
+
+		// 	canvasContext.fillText("2", 390, 150);
+		// 	canvasContext.fillStyle = 'black';
+		// 	canvasContext.fillText("1", 390, 150);
+		// }, 3000)
+// //end text over canvas testing
 
 		// check to see if ball is on the court and reverse if at edge
 		if(ballx >= canvas.width-20){
@@ -389,7 +483,8 @@ const QUIT_SCORE = 20;
 			if(bally>=paddle2Y-50 && bally <= (paddle2Y +PADDLE_HEIGHT/2)){
 
 				ballSpeedX = -(ballSpeedX +2);
-				ballSpeedY = ballSpeedY + (Math.random() < 0.5 ? -1 : 1)*(Math.random()*8);			}else{
+				ballSpeedY = ballSpeedY + (Math.random() < 0.5 ? -1 : 1)*(Math.random()*8);
+			}else{
 				// alert ('Hit the computer paddle');
 				ballReset2()
 
@@ -463,32 +558,38 @@ const QUIT_SCORE = 20;
 <div id ='wholeShebang'>
 	<div id = 'pongContainer' >
 
-		<div id='leftBlock'></div>
+<!-- 		<div id='leftBlock'></div>
+ -->		<div id ='leftPaddle'><img src="./images/paddle.png" width = '50px' height = '50px' alt=""></div>
+
 		<div id ='centerBlock'>
 			<p id='movingPong'>PONG</p>
 		</div>	
-		<div id ='rightBlock'></div>
-	</div>
+		<div id ='rightPaddle'><img src="./images/paddle.png" width = '50px' height = '50px' alt=""></div>
+		
+
+<!-- 		<div id ='rightBlock'></div>
+ -->	</div>
 
 	<h3 id='compScore'>Computer Score: 0</h3>
 	<h3 id='userScore'>User Score: 0</h3>
 
-
-	<canvas id ='gameCanvas' width = '800' height='600'></canvas>
-
-	<button id = 'pauseButton'>Pause</button><br>
-	<button id = 'resumeButton'>Resume</button>
+	<div id ='canvasHolderDiv'>
+		<canvas id ='gameCanvas' width = '800' height='600'></canvas>
+		<br>
+		<button id = 'pauseButton'>Pause</button> ----
+		<button id = 'resumeButton'>Resume</button>
+	</div>
 </div>
 
 
 
-<div id = 'surroundThree'>
+<!-- <div id = 'surroundThree'>
 		<div id = 'left'></div>
 		<div id = 'center'></div>
 		<div id = 'right'></div>
 
 
-</div>
+</div> -->
 </body>
 </html>
 
