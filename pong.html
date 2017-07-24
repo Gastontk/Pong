@@ -23,13 +23,13 @@
 			/*margin-left: 5px;*/
 			/*text-align: center;*/
 		}
-		#leftBlock{
+/*		#leftBlock{
 			float: left;
 			display: inline-block;
 			width: 10px;
 			height: 90px;
 			background-color: grey;
-		}
+		}*/
 		#leftPaddle{
 			margin-top: 20px;
 			float: left;
@@ -46,14 +46,14 @@
 			float: right;
 			margin-left: 700px;
 		}
-		#rightBlock{
+/*		#rightBlock{
 			float: right;
 			display: inline-block;
 			width: 10px;
 			height: 90px;
 			background-color: grey;
 			padding:0px;
-		}
+		}*/
 		#pongContainer{
 			width: 800px;
 			height: 90px;
@@ -64,7 +64,7 @@
 		#canvasHolderDiv{
 			width: 1000px;
 			height:800px;
-			background-color: grey; 
+			background-color: aquamarine; 
 			text-align: center;
 			border: solid darkblue 5px;
 
@@ -73,6 +73,13 @@
 			margin-top: 100px
 
 		}
+/*		#courtLineDiv{
+			background-color: yellow;
+			height: 605px;
+			width: 805px;
+			margin-top: 95px;
+
+		}*/
 /*following is for testing agt bottom of page only*/
 /*	#surroundThree{
 		background-color: yellow;
@@ -112,6 +119,7 @@
 
 <script>
 var paused = false;
+var timeLeft = '3';
 
 var canvas;
 var canvasContext;
@@ -128,7 +136,7 @@ var computerScore = 0 ;
 const PADDLE_HEIGHT = 100;
 const PADDLE_THICKNESS = 10;
 const COMPUTER_SPEED = 5;
-const QUIT_SCORE = 20;
+const QUIT_SCORE = 15;
 
 //Load setup after window has completely loaded
 	$(document).ready(function(){
@@ -194,16 +202,20 @@ const QUIT_SCORE = 20;
 
 	})
 
+
 	window.onload = function(){
-
+		// var timeLeft ='3';
+		// setTimeout(function(){
+		// 	timeLeft = '2';
+		// },1000);
+		// setTimeout(function(){
+		// 	timeLeft = '1'
+		// },2000)
+		// setTimeout(function(){
+		// 	timeLeft = ''
+		// },3000)
+		console.log('On load, timeLeft is ', timeLeft)
 //Animation testing
-
-
-
-
-
-
-
 		// movingPongSection = document.getElementById('movingPong');
 		// var moveCount = 50;
 
@@ -258,8 +270,8 @@ const QUIT_SCORE = 20;
 
 
 
-
-		var ready = window.confirm('Ready?');
+		var readyText = 'First to ' + QUIT_SCORE + ' wins. Ready?'
+		var ready = window.confirm(readyText);
 		//setup eventlisteners
 		document.getElementById("pauseButton").addEventListener("click", function(){
 			paused = true ;
@@ -278,9 +290,9 @@ const QUIT_SCORE = 20;
 		leftPaddle = document.getElementById('leftPaddle');
 
 
-		setInterval(function(){
+		// setInterval(function(){
 
-		})
+		// })
 
 
 
@@ -308,7 +320,7 @@ const QUIT_SCORE = 20;
 	
 		// setINterval(function)
 		setInterval( function(){
-			console.log('In the set interval, paused is', paused);
+			console.log('In the set interval, paused is', paused, 'and timeLeft is', timeLeft);
 			if(paused ==false){  
 				moveEverything();
 				computerMovement();
@@ -365,10 +377,58 @@ const QUIT_SCORE = 20;
 			}
 			compScoreSection.innerHTML= 'Computer Score: ' + computerScore;
 			paused = true ;
-			setTimeout(function(){
-				paused = false;
 
-			},2000);
+//Countdown to serve
+			setTimeout(function(){
+				// paused = true;
+
+				timeLeft = '3';
+					canvasContext.font = '200px Arial';
+					console.log('timeLeft is',timeLeft);
+					canvasContext.fillStyle = 'white';
+					canvasContext.fillText(timeLeft, 350, 150);
+
+
+				setTimeout(function(){
+
+					// canvasContext.font = '100px Arial';
+					console.log('timeLeft is',timeLeft);
+
+					canvasContext.fillStyle = 'darkgreen';
+
+
+					canvasContext.fillText(timeLeft, 350, 150);
+					drawNet();
+
+					timeLeft = '2';
+					canvasContext.fillStyle = 'white';
+					canvasContext.fillText(timeLeft, 350, 150);
+
+				canvasContext.fillText(timeLeft, 350, 150);
+				},1000);
+				setTimeout(function(){
+					canvasContext.fillStyle = 'darkgreen';
+
+					canvasContext.fillText(timeLeft, 350, 150);
+					drawNet()
+					timeLeft = '1'
+					// canvasContext.font = '100px Arial';
+					console.log('timeLeft is',timeLeft);
+					canvasContext.fillStyle = 'white';
+					canvasContext.fillText(timeLeft, 350, 150);
+				},2000)
+				setTimeout(function(){
+					canvasContext.fillStyle = 'white';
+					canvasContext.fillText(timeLeft, 350, 150);
+					timeLeft = ''
+					paused = false;
+				},3000)
+
+
+
+
+
+			},1000);
 
 
 		
@@ -393,10 +453,56 @@ const QUIT_SCORE = 20;
 			}
 		userScoreSection.innerHTML= 'Your Score: ' + userScore;
 		paused = true ;
-		setTimeout(function(){
-			paused = false;
+			setTimeout(function(){
+				// paused = true;
 
-		},2000);
+				timeLeft = '3';
+					canvasContext.font = '200px Arial';
+					console.log('timeLeft is',timeLeft);
+					canvasContext.fillStyle = 'white';
+					canvasContext.fillText(timeLeft, 350, 150);
+
+
+				setTimeout(function(){
+
+					// canvasContext.font = '100px Arial';
+					console.log('timeLeft is',timeLeft);
+
+					canvasContext.fillStyle = 'darkgreen';
+
+
+					canvasContext.fillText(timeLeft, 350, 150);
+					drawNet();
+
+					timeLeft = '2';
+					canvasContext.fillStyle = 'white';
+					canvasContext.fillText(timeLeft, 350, 150);
+
+				canvasContext.fillText(timeLeft, 350, 150);
+				},1000);
+				setTimeout(function(){
+					canvasContext.fillStyle = 'darkgreen';
+
+					canvasContext.fillText(timeLeft, 350, 150);
+					drawNet()
+					timeLeft = '1'
+					// canvasContext.font = '100px Arial';
+					console.log('timeLeft is',timeLeft);
+					canvasContext.fillStyle = 'white';
+					canvasContext.fillText(timeLeft, 350, 150);
+				},2000)
+				setTimeout(function(){
+					canvasContext.fillStyle = 'white';
+					canvasContext.fillText(timeLeft, 350, 150);
+					timeLeft = ''
+					paused = false;
+				},3000)
+
+
+
+
+
+			},1000);
 
 		
 
@@ -427,8 +533,8 @@ const QUIT_SCORE = 20;
 	}
 
 //Draw athe screen
-	function drawEverything(){
-	
+	function drawEverything(timeLeft){
+		console.log(timeLeft);
 		//Use this to force paddles to follow the ball
 		// paddle1Y = bally -50;
 		// paddle2Y = bally -50;
@@ -441,14 +547,20 @@ const QUIT_SCORE = 20;
 
 		//right paddle
 		colorRect(canvas.width -PADDLE_THICKNESS, paddle2Y-(PADDLE_HEIGHT/2), PADDLE_THICKNESS, PADDLE_HEIGHT, 'red');
-		for(var i = 0;i< canvas.height; i+=5){
-			// console.log('I is', i);
-			colorRect(400, i,1, canvas.height, 'white');
 
-		}
+
+//for drawing a line for the net. seems too comp int
+		// for(var i = 0;i< canvas.height; i+=5){
+		// 	// console.log('I is', i);
+		// 	colorRect(400, i,1, canvas.height, 'white');
+
+		// }
+//better way? Created seperagte func so I can call it during countdown
+	drawNet();
+
 
 //Test adding text over the canvas:
-		canvasContext.font = '60px Arial';
+
 
 		// setTimeout(function(){
 
@@ -457,16 +569,18 @@ const QUIT_SCORE = 20;
 		// 	canvasContext.fillText("3", 390, 150);
 
 		// }, 1000)		
-	var timeLeft = 3
-		setTimeout(function(){
-			canvasContext.fillStyle = 'black';
+	// timeLeft ='This is where the time will go!!'
+		// if(timeLeft){
+		// 	canvasContext.font = '100px Arial';
+		// 	console.log('timeLeft is',timeLeft);
+		// 		canvasContext.fillStyle = 'black';
 
 
-			canvasContext.fillText(timeLeft, 390, 150);
+		// 		canvasContext.fillText(timeLeft, 390, 150);
+		// }
 			
 
-
-		}, 2000)		
+	
 		// setTimeout(function(){
 		// 	canvasContext.fillStyle = 'darkgreen';
 
@@ -526,7 +640,15 @@ const QUIT_SCORE = 20;
 				
 	}
 
-
+//draw the net
+	function drawNet(){
+		canvasContext.beginPath();
+		canvasContext.moveTo(400,0);
+		canvasContext.lineTo(400,600);
+		canvasContext.lineWidth = 5;
+		canvasContext.strokeStyle = 'white';
+		canvasContext.stroke();
+	}
 	//fill rectangles
 	function colorRect(leftX, topY, width, height, drawColor){
 		canvasContext.fillStyle = drawColor;
@@ -538,7 +660,7 @@ const QUIT_SCORE = 20;
 
 
 
-		//draw the ball requires  centerX of ball, centerY, the radius, 0 if for full circle(radians) and true reverses the part of the circle from false.
+//draw the ball requires  centerX of ball, centerY, the radius, 0 if for full circle(radians) and true reverses the part of the circle from false.
 
 		canvasContext.fillStyle = drawColor;
 		canvasContext.beginPath();
@@ -574,10 +696,12 @@ const QUIT_SCORE = 20;
 	<h3 id='userScore'>User Score: 0</h3>
 
 	<div id ='canvasHolderDiv'>
-		<canvas id ='gameCanvas' width = '800' height='600'></canvas>
-		<br>
-		<button id = 'pauseButton'>Pause</button> ----
-		<button id = 'resumeButton'>Resume</button>
+		<!-- <div id ='courtLineDiv'> -->
+			<canvas id ='gameCanvas' width = '800' height='600'></canvas>
+			<br>
+			<button id = 'pauseButton'>Pause</button> ----
+			<button id = 'resumeButton'>Resume</button>
+		<!-- </div> -->
 	</div>
 </div>
 
