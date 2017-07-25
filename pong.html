@@ -269,7 +269,6 @@ const QUIT_SCORE = 15;
 		console.log('Page loaded.')
 
 
-
 		var readyText = 'First to ' + QUIT_SCORE + ' wins. Ready?'
 		var ready = window.confirm(readyText);
 		//setup eventlisteners
@@ -297,13 +296,20 @@ const QUIT_SCORE = 15;
 
 
 		// alert(ready);
-		if(!ready){
-			alert('game cancelled')
-			// document.body.innerHTML
-			wholePage.innerHTML= '<h1> YOU CANCELLED!! </h1>'
 
-			// end;
-		}
+
+//Removed to test blur. Requires preloading.
+		// if(!ready){
+		// 	alert('game cancelled')
+		// 	// document.body.innerHTML
+		// 	wholePage.innerHTML= '<h1> YOU CANCELLED!! </h1>'
+
+		// 	// end;
+		// }
+
+
+
+
 		// else{
 		// 	wholePage.innerHTML= '<h1> YOU CANCELLED!! </h1>'
 		// }
@@ -360,6 +366,8 @@ const QUIT_SCORE = 15;
 //Reset ball if it goes off the left side. Adds score to computer
 	function ballReset(){
 		// ballSpeedX = -ballSpeedX;
+
+
 			ballSpeedX = 10;
 			ballSpeedY = 0;
 
@@ -377,59 +385,15 @@ const QUIT_SCORE = 15;
 			}
 			compScoreSection.innerHTML= 'Computer Score: ' + computerScore;
 			paused = true ;
+			// setTimeout(function(){
+			// 	$('body').css('filter', 'blur(0px))');
+
+			// }, 600)
 
 //Countdown to serve
-			setTimeout(function(){
-				// paused = true;
+			// $('body').css('filter', 'blur(10px)');
 
-				timeLeft = '3';
-					canvasContext.font = '200px Arial';
-					console.log('timeLeft is',timeLeft);
-					canvasContext.fillStyle = 'white';
-					canvasContext.fillText(timeLeft, 350, 150);
-
-
-				setTimeout(function(){
-
-					// canvasContext.font = '100px Arial';
-					console.log('timeLeft is',timeLeft);
-
-					canvasContext.fillStyle = 'darkgreen';
-
-
-					canvasContext.fillText(timeLeft, 350, 150);
-					drawNet();
-
-					timeLeft = '2';
-					canvasContext.fillStyle = 'white';
-					canvasContext.fillText(timeLeft, 350, 150);
-
-				canvasContext.fillText(timeLeft, 350, 150);
-				},1000);
-				setTimeout(function(){
-					canvasContext.fillStyle = 'darkgreen';
-
-					canvasContext.fillText(timeLeft, 350, 150);
-					drawNet()
-					timeLeft = '1'
-					// canvasContext.font = '100px Arial';
-					console.log('timeLeft is',timeLeft);
-					canvasContext.fillStyle = 'white';
-					canvasContext.fillText(timeLeft, 350, 150);
-				},2000)
-				setTimeout(function(){
-					canvasContext.fillStyle = 'white';
-					canvasContext.fillText(timeLeft, 350, 150);
-					timeLeft = ''
-					paused = false;
-				},3000)
-
-
-
-
-
-			},1000);
-
+			countdown();
 
 		
 	}
@@ -453,8 +417,81 @@ const QUIT_SCORE = 15;
 			}
 		userScoreSection.innerHTML= 'Your Score: ' + userScore;
 		paused = true ;
+//Countdown
+	countdown();
+			// $('body').css('filter', 'blur(5px)');
+
+
+			// setTimeout(function(){
+			// 	// paused = true;
+
+			// 	$('body').css('filter', 'blur(10px)');
+
+
+
+			// 	timeLeft = '3';
+			// 		canvasContext.font = '200px Arial';
+			// 		console.log('timeLeft is',timeLeft);
+			// 		canvasContext.fillStyle = 'white';
+			// 		canvasContext.fillText(timeLeft, 350, 150);
+
+
+			// 	setTimeout(function(){
+
+			// 		// canvasContext.font = '100px Arial';
+			// 		console.log('timeLeft is',timeLeft);
+
+			// 		canvasContext.fillStyle = 'darkgreen';
+
+
+			// 		canvasContext.fillText(timeLeft, 350, 150);
+			// 		drawNet();
+
+			// 		timeLeft = '2';
+			// 		canvasContext.fillStyle = 'white';
+			// 		canvasContext.fillText(timeLeft, 350, 150);
+
+			// 	canvasContext.fillText(timeLeft, 350, 150);
+			// 	},1000);
+			// 	setTimeout(function(){
+			// 		canvasContext.fillStyle = 'darkgreen';
+
+			// 		canvasContext.fillText(timeLeft, 350, 150);
+			// 		drawNet()
+			// 		timeLeft = '1'
+			// 		// canvasContext.font = '100px Arial';
+			// 		console.log('timeLeft is',timeLeft);
+			// 		canvasContext.fillStyle = 'white';
+			// 		canvasContext.fillText(timeLeft, 350, 150);
+			// 	},2000)
+			// 	setTimeout(function(){
+			// 		canvasContext.fillStyle = 'white';
+			// 		canvasContext.fillText(timeLeft, 350, 150);
+			// 		timeLeft = ''
+			// 		paused = false;
+			// 	},3000)
+
+
+
+
+
+			// },1000);
+
+		
+
+	};
+
+
+//seperate blur and countdown
+	function countdown(){
+
+
+
+			$('body').css('filter', 'blur(5px)');
+
 			setTimeout(function(){
 				// paused = true;
+				$('body').css('filter', 'blur(10px)');
 
 				timeLeft = '3';
 					canvasContext.font = '200px Arial';
@@ -477,6 +514,8 @@ const QUIT_SCORE = 15;
 					timeLeft = '2';
 					canvasContext.fillStyle = 'white';
 					canvasContext.fillText(timeLeft, 350, 150);
+					$('body').css('filter', 'blur(7px)');
+
 
 				canvasContext.fillText(timeLeft, 350, 150);
 				},1000);
@@ -490,11 +529,15 @@ const QUIT_SCORE = 15;
 					console.log('timeLeft is',timeLeft);
 					canvasContext.fillStyle = 'white';
 					canvasContext.fillText(timeLeft, 350, 150);
+					$('body').css('filter', 'blur(3px)');
+
 				},2000)
 				setTimeout(function(){
 					canvasContext.fillStyle = 'white';
 					canvasContext.fillText(timeLeft, 350, 150);
 					timeLeft = ''
+					$('body').css('filter', 'blur(0px)');
+
 					paused = false;
 				},3000)
 
@@ -504,9 +547,9 @@ const QUIT_SCORE = 15;
 
 			},1000);
 
-		
 
-	}	
+
+	}
 //Computer move controller
 	function computerMovement(){
 		if(paddle2Y < bally){
